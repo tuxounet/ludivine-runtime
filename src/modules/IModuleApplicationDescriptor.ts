@@ -9,5 +9,5 @@ export interface IModuleApplicationDescriptor {
 
 export type IModuleApplicationCtor = (
   kernel: IKernel,
-  parent?: IKernelElement
+  parent: IKernelElement
 ) => IAppElement;
