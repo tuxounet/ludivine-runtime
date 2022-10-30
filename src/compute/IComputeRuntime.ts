@@ -1,3 +1,5 @@
+import { IStorageVolume } from "../storage/IStorageVolume";
+
 export interface IComputeDependency {
   name: string;
   version?: string;
@@ -27,6 +29,7 @@ export interface IComputeProjectCode {
 export interface IComputeExecuteResult {
   rc: number;
   output: string;
+  errors: string;
 }
 
 export interface IComputeRuntime {
@@ -36,6 +39,11 @@ export interface IComputeRuntime {
   unprovision: () => Promise<boolean>;
   ensureCommandDependencies: () => Promise<void>;
   ensureDependencies: (deps: IComputeDependency[]) => Promise<void>;
+  executeEval: (
+    strToEval: string,
+    runVolume: IStorageVolume
+  ) => Promise<IComputeExecuteResult>;
+
   executeSource: (source: IComputeSourceCode) => Promise<IComputeExecuteResult>;
   executeProject: (
     project: IComputeProjectCode

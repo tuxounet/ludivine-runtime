@@ -10,6 +10,13 @@ export class BasicError extends Error {
     );
   }
 
+  static notImplementedYet(who: string, what: string): BasicError {
+    return new BasicError(
+      417,
+      `${what} n'est pas implémenté pour le moment sur ${who}`
+    );
+  }
+
   constructor(readonly code: number, message: string) {
     super(message);
   }

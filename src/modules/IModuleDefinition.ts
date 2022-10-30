@@ -1,4 +1,4 @@
-import { IModuleApplicationCtor } from "./IModuleApplicationCtor";
+import { IModuleApplicationDescriptor } from "./IModuleApplicationDescriptor";
 export interface IModuleDefinition {
-  applications?: IModuleApplicationCtor[];
+  applications?: IModuleApplicationDescriptor[];
 }

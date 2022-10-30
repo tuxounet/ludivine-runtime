@@ -1,3 +1,4 @@
+import { IApplicationsBroker } from "../applications/IApplicationsBroker";
 import { IChannelsBroker } from "../channels/IChannelsBroker";
 import { IComputeBroker } from "../compute/IComputeBroker";
 import { IEndpointsBroker } from "../endpoints/IEndpointsBroker";
@@ -9,6 +10,7 @@ import { IStorageBroker } from "../storage/IStorageBroker";
 export interface IKernel {
   readonly version: string;
   started: boolean;
+  applications: IApplicationsBroker;
   logging: ILogBroker;
   storage: IStorageBroker;
   endpoints: IEndpointsBroker;
