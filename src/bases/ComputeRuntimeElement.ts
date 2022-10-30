@@ -72,11 +72,11 @@ export abstract class ComputeRuntimeElement
           cwd: runPath,
         },
         (err, stdout, stderr) => {
-          if (err) {
+          if (err != null) {
             return reject(err);
           }
           const result: IComputeExecuteResult = {
-            rc: proc.exitCode || 0,
+            rc: proc.exitCode ?? 0,
             output: stdout,
             errors: stderr,
           };
