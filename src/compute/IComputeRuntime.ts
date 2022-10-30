@@ -9,23 +9,6 @@ export interface IComputeCommandDependency {
   name: string;
 }
 
-export interface IComputeSourceCode {
-  name: string;
-  extension: string;
-  dependencies: IComputeDependency[];
-  body: string;
-  args?: string[];
-}
-
-export interface IComputeProjectCode {
-  name: string;
-  dependencies: IComputeDependency[];
-  extensions: string[];
-  path: string;
-  entryPoint: string;
-  args?: string[];
-}
-
 export interface IComputeExecuteResult {
   rc: number;
   output: string;
@@ -38,14 +21,19 @@ export interface IComputeRuntime {
   provision: () => Promise<boolean>;
   unprovision: () => Promise<boolean>;
   ensureCommandDependencies: () => Promise<void>;
-  ensureDependencies: (deps: IComputeDependency[]) => Promise<void>;
+  ensureDependencies: (
+    deps: IComputeDependency[],
+    runVolume: IStorageVolume
+  ) => Promise<void>;
   executeEval: (
     strToEval: string,
     runVolume: IStorageVolume
   ) => Promise<IComputeExecuteResult>;
 
-  executeSource: (source: IComputeSourceCode) => Promise<IComputeExecuteResult>;
-  executeProject: (
-    project: IComputeProjectCode
+  executeSource: (
+    sourceVolume: IStorageVolume,
+    dependencies: IComputeDependency[],
+    entryPoint: string,
+    args?: string[] | undefined
   ) => Promise<IComputeExecuteResult>;
 }

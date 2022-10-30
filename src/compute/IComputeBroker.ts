@@ -1,11 +1,7 @@
 import { IKernelElement } from "../kernel/IKernelElement";
 import { IStorageVolume } from "../storage";
 
-import {
-  IComputeSourceCode,
-  IComputeExecuteResult,
-  IComputeProjectCode,
-} from "./IComputeRuntime";
+import { IComputeDependency, IComputeExecuteResult } from "./IComputeRuntime";
 
 export interface IComputeBroker extends IKernelElement {
   executeEval: (
@@ -16,11 +12,9 @@ export interface IComputeBroker extends IKernelElement {
 
   executeSource: (
     runtime: string,
-    source: IComputeSourceCode
-  ) => Promise<IComputeExecuteResult>;
-
-  executeProject: (
-    runtime: string,
-    project: IComputeProjectCode
+    sourceVolume: IStorageVolume,
+    dependencies: IComputeDependency[],
+    entryPoint: string,
+    args?: string[]
   ) => Promise<IComputeExecuteResult>;
 }
