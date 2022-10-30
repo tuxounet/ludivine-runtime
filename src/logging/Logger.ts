@@ -1,14 +1,14 @@
-import { IKernel, IKernelElement } from "../kernel";
+import { IKernelElement } from "../kernel";
 import { ILogLine } from "./ILogLine";
-import { LogLevels } from "./LogLevels";
+import { LogLevel } from "./LogLevel";
 
 export class Logger {
   constructor(
-    readonly sender: IKernelElement | IKernel,
+    readonly sender: IKernelElement,
     readonly callback: (line: ILogLine) => void
   ) {}
 
-  emit(level: LogLevels, ...messageParts: unknown[]): void {
+  emit(level: LogLevel, ...messageParts: unknown[]): void {
     this.callback({
       level: level,
       date: this.toTimeString(),
@@ -17,9 +17,18 @@ export class Logger {
     });
   }
 
+  trace(...messageParts: unknown[]): void {
+    this.callback({
+      level: LogLevel.TRACE,
+      date: this.toTimeString(),
+      sender: this.sender.fullName,
+      line: this.buildOutput(...messageParts),
+    });
+  }
+
   debug(...messageParts: unknown[]): void {
     this.callback({
-      level: "DEBUG",
+      level: LogLevel.DEBUG,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),
@@ -28,7 +37,7 @@ export class Logger {
 
   input(...messageParts: unknown[]): void {
     this.callback({
-      level: "INPUT",
+      level: LogLevel.INPUT,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),
@@ -37,7 +46,7 @@ export class Logger {
 
   info(...messageParts: unknown[]): void {
     this.callback({
-      level: "INFO",
+      level: LogLevel.INFO,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),
@@ -46,7 +55,7 @@ export class Logger {
 
   warn(...messageParts: unknown[]): void {
     this.callback({
-      level: "WARN",
+      level: LogLevel.WARN,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),
@@ -55,7 +64,7 @@ export class Logger {
 
   error(...messageParts: unknown[]): void {
     this.callback({
-      level: "ERROR",
+      level: LogLevel.ERROR,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),

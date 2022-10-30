@@ -11,6 +11,7 @@ import {
   IComputeRuntime,
 } from "../compute/IComputeRuntime";
 import { exec } from "../sys/childProc";
+import { logMethod } from "../logging";
 
 export abstract class ComputeRuntimeElement
   extends KernelElement
@@ -31,6 +32,7 @@ export abstract class ComputeRuntimeElement
   commandsDependencies: IComputeCommandDependency[];
   protected runDirectory?: string;
 
+  @logMethod()
   async ensureCommandDependencies(): Promise<void> {
     const failed: IComputeDependency[] = [];
     for (const dep of this.commandsDependencies) {
@@ -49,14 +51,17 @@ export abstract class ComputeRuntimeElement
     }
   }
 
+  @logMethod()
   async provision(): Promise<boolean> {
     return true;
   }
 
+  @logMethod()
   async unprovision(): Promise<boolean> {
     return false;
   }
 
+  @logMethod()
   async executeEval(
     strToEval: string,
     runVolume: IStorageVolume
@@ -67,6 +72,7 @@ export abstract class ComputeRuntimeElement
     return await exec(cmd, runPath);
   }
 
+  @logMethod()
   async executeSource(
     sourceVolume: IStorageVolume,
     dependencies: IComputeDependency[],
@@ -81,6 +87,7 @@ export abstract class ComputeRuntimeElement
     return await exec(cmd, runPath);
   }
 
+  @logMethod()
   async ensureDependencies(
     deps: IComputeDependency[],
     runVolume: IStorageVolume

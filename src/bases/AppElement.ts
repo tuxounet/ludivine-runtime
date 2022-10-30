@@ -1,4 +1,5 @@
 import type { applications, kernel, messaging } from "..";
+import { logMethod } from "../logging";
 import { KernelElement } from "./KernelElement";
 
 export abstract class AppElement
@@ -15,11 +16,9 @@ export abstract class AppElement
   }
 
   async execute(): Promise<number> {
-    this.log.debug("execution begin");
     await this.onStart();
     const rc = await this.main();
     await this.onStop();
-    this.log.debug("execution ended with code", rc);
     return rc;
   }
 
@@ -35,8 +34,8 @@ export abstract class AppElement
     });
   }
 
+  @logMethod()
   protected async onStart(): Promise<void> {
-    this.log.debug("onStart");
     if (this.substriptions != null) {
       await Promise.all(
         this.substriptions.map(
@@ -44,11 +43,10 @@ export abstract class AppElement
         )
       );
     }
-    this.log.debug("onStarted");
   }
 
+  @logMethod()
   protected async onStop(): Promise<void> {
-    this.log.debug("onStop");
     if (this.substriptions != null) {
       await Promise.all(
         this.substriptions.map(
@@ -57,7 +55,6 @@ export abstract class AppElement
         )
       );
     }
-    this.log.debug("onStopped");
   }
 
   protected async main(): Promise<number> {

@@ -1,4 +1,5 @@
 import type { kernel, logging } from "..";
+import { logMethod } from "../logging";
 import { Logger } from "../logging/Logger";
 import { Observer } from "../messaging/Observer";
 
@@ -18,10 +19,12 @@ export abstract class KernelElement
     });
   }
 
+  @logMethod()
   async initialize(): Promise<void> {
     this.log.debug("initialzed");
   }
 
+  @logMethod()
   async shutdown(): Promise<void> {
     this.log.debug("stopped");
   }

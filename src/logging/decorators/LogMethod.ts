@@ -1,16 +1,16 @@
-import { IKernel, IKernelElement } from "../../kernel";
-import { LogLevels } from "../LogLevels";
+import { IKernelElement } from "../../kernel";
+import { LogLevel } from "../LogLevel";
 
-export function logMethod(level: LogLevels = "DEBUG") {
+export function logMethod(level: LogLevel = LogLevel.TRACE) {
   return function (
-    target: IKernelElement | IKernel,
+    target: IKernelElement,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
     const targetMethod = descriptor.value;
 
     descriptor.value = function (...args: any[]) {
-      const emit = (level: LogLevels, ...parts: any[]) => {
+      const emit = (level: LogLevel, ...parts: any[]) => {
         const that: any = this;
         const logger = that["log"];
 
@@ -27,18 +27,15 @@ export function logMethod(level: LogLevels = "DEBUG") {
               emit(level, "🔺", propertyKey);
             })
             .catch((e) => {
-              emit("ERROR", "🛑 ", propertyKey, "-", "failed", ":", e);
+              emit(LogLevel.ERROR, "🛑 ", propertyKey, "-", "failed", ":", e);
             });
         } else {
           emit(level, "🔺", propertyKey);
         }
-        return result;
       } catch (e) {
-        emit("ERROR", "🛑", propertyKey, "-", "failed", ":", e);
+        emit(LogLevel.ERROR, "🛑", propertyKey, "-", "failed", ":", e);
         throw e;
       }
     };
-
-    return descriptor;
   };
 }
