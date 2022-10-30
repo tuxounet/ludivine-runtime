@@ -3,6 +3,7 @@ import { IComputeBroker } from "../compute/IComputeBroker";
 import { IEndpointsBroker } from "../endpoints/IEndpointsBroker";
 import { ILogBroker } from "../logging/ILogBroker";
 import { IMessagingBroker } from "../messaging/IMessagingBroker";
+import { IModulesBroker } from "../modules";
 import { IStorageBroker } from "../storage/IStorageBroker";
 
 export interface IKernel {
@@ -14,6 +15,7 @@ export interface IKernel {
   messaging: IMessagingBroker;
   compute: IComputeBroker;
   channels: IChannelsBroker;
+  modules: IModulesBroker;
   readonly fullName: string;
   initialize: () => Promise<void>;
   shutdown: () => Promise<void>;

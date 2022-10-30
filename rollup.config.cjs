@@ -6,7 +6,7 @@ const pkg = require("./package.json");
 module.exports.default = [
   {
     input: "src/index.ts",
-    external: Object.keys(pkg.dependencies),
+    external: pkg.dependencies ? Object.keys(pkg.dependencies) : [],
     output: {
       file: "dist/index.d.ts",
       format: "es",
@@ -15,7 +15,7 @@ module.exports.default = [
   },
   {
     input: "src/index.ts",
-    external: Object.keys(pkg.dependencies),
+    external: pkg.dependencies ? Object.keys(pkg.dependencies) : [],
     output: {
       file: "dist/index.js",
       format: "cjs",
