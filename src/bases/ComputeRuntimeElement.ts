@@ -1,6 +1,5 @@
 import { KernelElement } from "./KernelElement";
 import commandExists from "command-exists";
-import childProc from "child_process";
 import { IKernelElement } from "../kernel/IKernelElement";
 import { IKernel } from "../kernel";
 import { BasicError } from "../errors/BasicError";
@@ -11,6 +10,7 @@ import {
   IComputeExecuteResult,
   IComputeRuntime,
 } from "../compute/IComputeRuntime";
+import { exec } from "../sys/childProc";
 
 export abstract class ComputeRuntimeElement
   extends KernelElement
@@ -63,25 +63,8 @@ export abstract class ComputeRuntimeElement
   ): Promise<IComputeExecuteResult> {
     const runPath = await runVolume.fileSystem.getRealPath(".");
     const cmd = `${this.commandPrefix} ${this.evaluationSuffix} "${strToEval}"`;
-    return await new Promise((resolve, reject) => {
-      const proc = childProc.exec(
-        cmd,
-        {
-          cwd: runPath,
-        },
-        (err, stdout, stderr) => {
-          if (err != null) {
-            return reject(err);
-          }
-          const result: IComputeExecuteResult = {
-            rc: proc.exitCode ?? 0,
-            output: stdout,
-            errors: stderr,
-          };
-          resolve(result);
-        }
-      );
-    });
+
+    return await exec(cmd, runPath);
   }
 
   async executeSource(
@@ -95,25 +78,7 @@ export abstract class ComputeRuntimeElement
     const cmd = `${this.commandPrefix}  "${entryPoint}" ${
       args != null ? args.join(" ") : ""
     }`;
-    return await new Promise((resolve, reject) => {
-      const proc = childProc.exec(
-        cmd,
-        {
-          cwd: runPath,
-        },
-        (err, stdout, stderr) => {
-          if (err != null) {
-            return reject(err);
-          }
-          const result: IComputeExecuteResult = {
-            rc: proc.exitCode ?? 0,
-            output: stdout,
-            errors: stderr,
-          };
-          resolve(result);
-        }
-      );
-    });
+    return await exec(cmd, runPath);
   }
 
   async ensureDependencies(

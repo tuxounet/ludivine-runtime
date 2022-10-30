@@ -1,9 +1,21 @@
-import type { kernel, logging } from "..";
+import { IKernel, IKernelElement } from "../kernel";
+import { ILogLine } from "./ILogLine";
+import { LogLevels } from "./LogLevels";
+
 export class Logger {
   constructor(
-    readonly sender: kernel.IKernelElement,
-    readonly callback: (line: logging.ILogLine) => void
+    readonly sender: IKernelElement | IKernel,
+    readonly callback: (line: ILogLine) => void
   ) {}
+
+  emit(level: LogLevels, ...messageParts: unknown[]): void {
+    this.callback({
+      level: level,
+      date: this.toTimeString(),
+      sender: this.sender.fullName,
+      line: this.buildOutput(...messageParts),
+    });
+  }
 
   debug(...messageParts: unknown[]): void {
     this.callback({

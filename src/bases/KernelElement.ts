@@ -26,7 +26,7 @@ export abstract class KernelElement
     this.log.debug("stopped");
   }
 
-  protected log: Logger;
+  readonly log: Logger;
   get fullName(): string {
     if (this.parent != null) {
       return this.parent.fullName + "." + this.name;
