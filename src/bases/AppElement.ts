@@ -7,8 +7,8 @@ export abstract class AppElement
 {
   constructor(
     readonly name: string,
-    readonly parent: kernel.IKernelElement,
     readonly kernel: kernel.IKernel,
+    readonly parent?: kernel.IKernelElement,
     readonly subscriptions?: string[]
   ) {
     super(name, kernel, parent, subscriptions);

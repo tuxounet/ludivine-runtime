@@ -1,28 +1,40 @@
-import type { kernel, compute } from "..";
 import { KernelElement } from "./KernelElement";
 import commandExists from "command-exists";
-import { BasicError } from "../errors/BasicError";
 import childProc from "child_process";
+import { IKernelElement } from "../kernel/IKernelElement";
+import { IKernel } from "../kernel";
+import { BasicError } from "../errors/BasicError";
+import { IStorageVolume } from "../storage/IStorageVolume";
+import {
+  IComputeCommandDependency,
+  IComputeDependency,
+  IComputeExecuteResult,
+  IComputeProjectCode,
+  IComputeRuntime,
+  IComputeSourceCode,
+} from "../compute/IComputeRuntime";
 
 export abstract class ComputeRuntimeElement
   extends KernelElement
-  implements compute.IComputeRuntime
+  implements IComputeRuntime
 {
   constructor(
     name: string,
     readonly commandPrefix: string,
-    readonly kernel: kernel.IKernel,
-    readonly parent: kernel.IKernelElement,
+    readonly evaluationSuffix: string,
+    readonly kernel: IKernel,
+    readonly parent: IKernelElement,
     subscriptions?: string[]
   ) {
     super(name, kernel, parent, subscriptions);
     this.commandsDependencies = [];
   }
 
-  commandsDependencies: compute.IComputeCommandDependency[];
+  commandsDependencies: IComputeCommandDependency[];
   protected runDirectory?: string;
+
   async ensureCommandDependencies(): Promise<void> {
-    const failed: compute.IComputeDependency[] = [];
+    const failed: IComputeDependency[] = [];
     for (const dep of this.commandsDependencies) {
       try {
         await commandExists(dep.name);
@@ -47,9 +59,36 @@ export abstract class ComputeRuntimeElement
     return false;
   }
 
+  async executeEval(
+    strToEval: string,
+    runVolume: IStorageVolume
+  ): Promise<IComputeExecuteResult> {
+    const runPath = await runVolume.fileSystem.getRealPath(".");
+    const cmd = `${this.commandPrefix} ${this.evaluationSuffix} "${strToEval}"`;
+    return await new Promise((resolve, reject) => {
+      const proc = childProc.exec(
+        cmd,
+        {
+          cwd: runPath,
+        },
+        (err, stdout, stderr) => {
+          if (err != null) {
+            return reject(err);
+          }
+          const result: IComputeExecuteResult = {
+            rc: proc.exitCode ?? 0,
+            output: stdout,
+            errors: stderr,
+          };
+          resolve(result);
+        }
+      );
+    });
+  }
+
   async executeSource(
-    source: compute.IComputeSourceCode
-  ): Promise<compute.IComputeExecuteResult> {
+    source: IComputeSourceCode
+  ): Promise<IComputeExecuteResult> {
     await this.createNewRunDir();
     await this.ensureDependencies(source.dependencies);
     const fileName = source.name + "." + source.extension;
@@ -68,12 +107,13 @@ export abstract class ComputeRuntimeElement
     return {
       rc,
       output: logs,
+      errors: "",
     };
   }
 
   async executeProject(
-    project: compute.IComputeProjectCode
-  ): Promise<compute.IComputeExecuteResult> {
+    project: IComputeProjectCode
+  ): Promise<IComputeExecuteResult> {
     await this.createNewRunDir();
     if (this.runDirectory === undefined)
       throw BasicError.notFound(
@@ -118,12 +158,11 @@ export abstract class ComputeRuntimeElement
     return {
       rc,
       output: logs,
+      errors: "",
     };
   }
 
-  abstract ensureDependencies(
-    deps: compute.IComputeDependency[]
-  ): Promise<void>;
+  abstract ensureDependencies(deps: IComputeDependency[]): Promise<void>;
 
   protected async createNewRunDir(): Promise<void> {
     const volume = await this.kernel.storage.getVolume("runspace");
