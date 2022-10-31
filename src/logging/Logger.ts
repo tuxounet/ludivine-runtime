@@ -1,4 +1,5 @@
-import { IKernelElement } from "../kernel";
+import { KernelElement } from "../bases/KernelElement";
+import { IKernelElement } from "../kernel/IKernelElement";
 import { ILogLine } from "./ILogLine";
 import { LogLevel } from "./LogLevel";
 
@@ -73,10 +74,13 @@ export class Logger {
 
   private buildOutput(...messageParts: unknown[]): string {
     return messageParts
-      .map((item) => {
+      .map((item: any) => {
         if (typeof item === "string") return item;
         if (item instanceof Error)
           return `${item.name}: ${item.message} ${item.stack ?? ""}`;
+        if (typeof item["fullName"] === "string")
+          return `{${item["fullName"]}}`;
+        if (item == null) return "NULL!";
         return JSON.stringify(item);
       })
       .join(" ");

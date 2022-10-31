@@ -1,4 +1,5 @@
-import type { messaging } from "..";
+import { IMessageEvent } from "./IMessageEvent";
+
 export abstract class Observer {
-  async onMessage?(messageEvent: messaging.IMessageEvent): Promise<void> {}
+  async onMessage?(messageEvent: IMessageEvent): Promise<void> {}
 }

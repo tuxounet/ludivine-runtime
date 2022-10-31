@@ -1,20 +1,19 @@
-import type { kernel, logging } from "..";
-import { logMethod } from "../logging";
+import { IKernel } from "../kernel/IKernel";
+import { IKernelElement } from "../kernel/IKernelElement";
+import { logMethod } from "../logging/decorators/LogMethod";
+import { ILogLine } from "../logging/ILogLine";
 import { Logger } from "../logging/Logger";
 import { Observer } from "../messaging/Observer";
 
-export abstract class KernelElement
-  extends Observer
-  implements kernel.IKernelElement
-{
+export abstract class KernelElement extends Observer implements IKernelElement {
   constructor(
     readonly name: string,
-    readonly kernel: kernel.IKernel,
-    readonly parent?: kernel.IKernelElement,
+    readonly kernel: IKernel,
+    readonly parent?: IKernelElement,
     readonly substriptions?: string[]
   ) {
     super();
-    this.log = new Logger(this, (line: logging.ILogLine) => {
+    this.log = new Logger(this, (line: ILogLine) => {
       this.kernel.logging.output(line);
     });
   }
