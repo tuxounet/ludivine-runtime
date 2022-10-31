@@ -1,18 +1,16 @@
-import type { applications, kernel, messaging } from "..";
-import { logMethod } from "../logging";
+import { IAppElement } from "../applications/IAppElement";
+import { logMethod } from "../logging/decorators/LogMethod";
+import { IMessageEvent } from "../messaging/IMessageEvent";
+import { ISession } from "../sessions/ISession";
 import { KernelElement } from "./KernelElement";
 
-export abstract class AppElement
-  extends KernelElement
-  implements applications.IAppElement
-{
+export abstract class AppElement extends KernelElement implements IAppElement {
   constructor(
     readonly name: string,
-    readonly kernel: kernel.IKernel,
-    readonly parent: kernel.IKernelElement,
+    readonly session: ISession,
     readonly subscriptions?: string[]
   ) {
-    super(name, kernel, parent, subscriptions);
+    super(name, session.kernel, session, subscriptions);
   }
 
   async execute(): Promise<number> {
@@ -57,10 +55,11 @@ export abstract class AppElement
     }
   }
 
+  @logMethod()
   protected async main(): Promise<number> {
     await this.waitForShutdown();
     return 0;
   }
 
-  async onMessage(message: messaging.IMessageEvent): Promise<void> {}
+  async onMessage(message: IMessageEvent): Promise<void> {}
 }

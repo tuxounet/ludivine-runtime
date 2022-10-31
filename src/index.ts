@@ -9,6 +9,7 @@ import * as storage from "./storage/index";
 import * as messaging from "./messaging/index";
 import * as applications from "./applications/index";
 import * as modules from "./modules/index";
+import * as sessions from "./sessions";
 import * as sys from "./sys/index";
 export {
   applications,
@@ -22,5 +23,6 @@ export {
   errors,
   messaging,
   storage,
+  sessions,
   sys,
 };

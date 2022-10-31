@@ -21,8 +21,8 @@ export function logMethod(level: LogLevel = LogLevel.TRACE) {
         emit(level, "🔻", propertyKey);
 
         const result = targetMethod.apply(this, args);
-        if (result instanceof Promise) {
-          result
+        if (result && result instanceof Promise) {
+          return result
             .then(() => {
               emit(level, "🔺", propertyKey);
             })
@@ -31,6 +31,7 @@ export function logMethod(level: LogLevel = LogLevel.TRACE) {
             });
         } else {
           emit(level, "🔺", propertyKey);
+          return result;
         }
       } catch (e) {
         emit(LogLevel.ERROR, "🛑", propertyKey, "-", "failed", ":", e);
