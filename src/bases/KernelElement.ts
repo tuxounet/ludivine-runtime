@@ -3,16 +3,14 @@ import { IKernelElement } from "../kernel/IKernelElement";
 import { logMethod } from "../logging/decorators/LogMethod";
 import { ILogLine } from "../logging/ILogLine";
 import { Logger } from "../logging/Logger";
-import { Observer } from "../messaging/Observer";
 
-export abstract class KernelElement extends Observer implements IKernelElement {
+export abstract class KernelElement implements IKernelElement {
   constructor(
     readonly name: string,
     readonly kernel: IKernel,
     readonly parent?: IKernelElement,
     readonly substriptions?: string[]
   ) {
-    super();
     this.log = new Logger(this, (line: ILogLine) => {
       this.kernel.logging.output(line);
     });

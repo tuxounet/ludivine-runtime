@@ -1,6 +1,7 @@
-export interface IMessageEvent {
+export interface IMessageEvent<T = Record<string, unknown>> {
   date: string;
   sender: string;
   recipient: string;
-  body: Record<string, string>;
+  body: T;
+  sequence?: string;
 }

@@ -1,4 +1,3 @@
-import { KernelElement } from "../bases/KernelElement";
 import { IKernelElement } from "../kernel/IKernelElement";
 import { ILogLine } from "./ILogLine";
 import { LogLevel } from "./LogLevel";
@@ -11,7 +10,7 @@ export class Logger {
 
   emit(level: LogLevel, ...messageParts: unknown[]): void {
     this.callback({
-      level: level,
+      level,
       date: this.toTimeString(),
       sender: this.sender.fullName,
       line: this.buildOutput(...messageParts),
@@ -78,8 +77,8 @@ export class Logger {
         if (typeof item === "string") return item;
         if (item instanceof Error)
           return `${item.name}: ${item.message} ${item.stack ?? ""}`;
-        if (typeof item["fullName"] === "string")
-          return `{${item["fullName"]}}`;
+        if (typeof item === "object" && typeof item.fullName === "string")
+          return "{" + String(item?.fullName) + "}";
         if (item == null) return "NULL!";
         return JSON.stringify(item);
       })

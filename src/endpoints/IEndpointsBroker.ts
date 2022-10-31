@@ -1,11 +1,9 @@
-import { EndpointRouteMethod } from "./IEndpointRoute";
-
 import { IKernelElement } from "../kernel/IKernelElement";
-import { IEndpointRouteHandler } from "./IEndpointRouteHandler";
+
+import { ISession } from "../sessions/ISession";
+import { IEndpoint } from "./IEndpoint";
 export interface IEndpointsBroker extends IKernelElement {
-  registerRoute: (
-    method: EndpointRouteMethod,
-    path: string,
-    handler: IEndpointRouteHandler
-  ) => Promise<void>;
+  openEndpoint: (session: ISession, type: string) => Promise<void>;
+  get: (session: string) => Promise<IEndpoint>;
+  closeEndpoint: (session: string) => Promise<void>;
 }

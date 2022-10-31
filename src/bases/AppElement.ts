@@ -13,6 +13,7 @@ export abstract class AppElement extends KernelElement implements IAppElement {
     super(name, session.kernel, session, subscriptions);
   }
 
+  @logMethod()
   async execute(): Promise<number> {
     await this.onStart();
     const rc = await this.main();
@@ -20,6 +21,7 @@ export abstract class AppElement extends KernelElement implements IAppElement {
     return rc;
   }
 
+  @logMethod()
   protected async waitForShutdown(): Promise<void> {
     let loopinterval: NodeJS.Timer;
     await new Promise<void>((resolve) => {
