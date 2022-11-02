@@ -1,7 +1,7 @@
-import { LogLevels } from "./LogLevels";
+import { LogLevel } from "./LogLevel";
 
 export interface ILogLine {
-  level: LogLevels;
+  level: LogLevel;
   sender: string;
   date: string;
   line: string;

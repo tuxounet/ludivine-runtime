@@ -1,28 +1,27 @@
-import type { applications, kernel, messaging } from "..";
+import { IAppElement } from "../applications/IAppElement";
+import { logMethod } from "../logging/decorators/LogMethod";
+import { IMessageEvent } from "../messaging/IMessageEvent";
+import { ISession } from "../sessions/ISession";
 import { KernelElement } from "./KernelElement";
 
-export abstract class AppElement
-  extends KernelElement
-  implements applications.IAppElement
-{
+export abstract class AppElement extends KernelElement implements IAppElement {
   constructor(
     readonly name: string,
-    readonly kernel: kernel.IKernel,
-    readonly parent: kernel.IKernelElement,
+    readonly session: ISession,
     readonly subscriptions?: string[]
   ) {
-    super(name, kernel, parent, subscriptions);
+    super(name, session.kernel, session, subscriptions);
   }
 
+  @logMethod()
   async execute(): Promise<number> {
-    this.log.debug("execution begin");
     await this.onStart();
     const rc = await this.main();
     await this.onStop();
-    this.log.debug("execution ended with code", rc);
     return rc;
   }
 
+  @logMethod()
   protected async waitForShutdown(): Promise<void> {
     let loopinterval: NodeJS.Timer;
     await new Promise<void>((resolve) => {
@@ -35,8 +34,8 @@ export abstract class AppElement
     });
   }
 
+  @logMethod()
   protected async onStart(): Promise<void> {
-    this.log.debug("onStart");
     if (this.substriptions != null) {
       await Promise.all(
         this.substriptions.map(
@@ -44,11 +43,10 @@ export abstract class AppElement
         )
       );
     }
-    this.log.debug("onStarted");
   }
 
+  @logMethod()
   protected async onStop(): Promise<void> {
-    this.log.debug("onStop");
     if (this.substriptions != null) {
       await Promise.all(
         this.substriptions.map(
@@ -57,13 +55,13 @@ export abstract class AppElement
         )
       );
     }
-    this.log.debug("onStopped");
   }
 
+  @logMethod()
   protected async main(): Promise<number> {
     await this.waitForShutdown();
     return 0;
   }
 
-  async onMessage(message: messaging.IMessageEvent): Promise<void> {}
+  async onMessage(message: IMessageEvent): Promise<void> {}
 }

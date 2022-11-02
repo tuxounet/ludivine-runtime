@@ -1,19 +1,20 @@
-import type { kernel, storage } from "..";
 import { KernelElement } from "../bases/KernelElement";
+import { IKernel } from "../kernel/IKernel";
+import { IKernelElement } from "../kernel/IKernelElement";
+import { IStorageFileSystemDriver } from "./IStorageFileSystemDriver";
+import { IStoragePathsDriver } from "./IStoragePathsDriver";
+import { IStorageVolume } from "./IStorageVolume";
 
-export class StorageVolume
-  extends KernelElement
-  implements storage.IStorageVolume
-{
+export class StorageVolume extends KernelElement implements IStorageVolume {
   constructor(
     name: string,
     readonly id: string,
     readonly readonly: boolean,
     readonly ephemeral: boolean,
-    readonly paths: storage.IStoragePathsDriver,
-    readonly fileSystem: storage.IStorageFileSystemDriver,
-    readonly kernel: kernel.IKernel,
-    readonly parent: kernel.IKernelElement
+    readonly paths: IStoragePathsDriver,
+    readonly fileSystem: IStorageFileSystemDriver,
+    readonly kernel: IKernel,
+    readonly parent: IKernelElement
   ) {
     super(name, kernel, parent);
   }

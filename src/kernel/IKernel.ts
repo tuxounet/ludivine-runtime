@@ -1,10 +1,10 @@
 import { IApplicationsBroker } from "../applications/IApplicationsBroker";
-import { IChannelsBroker } from "../channels/IChannelsBroker";
 import { IComputeBroker } from "../compute/IComputeBroker";
 import { IEndpointsBroker } from "../endpoints/IEndpointsBroker";
 import { ILogBroker } from "../logging/ILogBroker";
 import { IMessagingBroker } from "../messaging/IMessagingBroker";
-import { IModulesBroker } from "../modules";
+import { IModulesBroker } from "../modules/IModulesBroker";
+import { ISessionsBroker } from "../sessions/ISessionsBroker";
 import { IStorageBroker } from "../storage/IStorageBroker";
 
 export interface IKernel {
@@ -16,8 +16,8 @@ export interface IKernel {
   endpoints: IEndpointsBroker;
   messaging: IMessagingBroker;
   compute: IComputeBroker;
-  channels: IChannelsBroker;
   modules: IModulesBroker;
+  sessions: ISessionsBroker;
   readonly fullName: string;
   initialize: () => Promise<void>;
   shutdown: () => Promise<void>;

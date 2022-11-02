@@ -1,17 +1,20 @@
-import { ObservableElement } from "../bases/ObservableElement";
+import { KernelElement } from "../bases/KernelElement";
 import { BasicError } from "../errors/BasicError";
-import type { kernel } from "..";
-export class Queue<T = Record<string, unknown>> extends ObservableElement {
-  q: T[];
+
+import { IKernel } from "../kernel/IKernel";
+import { IKernelElement } from "../kernel/IKernelElement";
+
+export class Queue<T = Record<string, unknown>> extends KernelElement {
   constructor(
-    name: string,
-    readonly kernel: kernel.IKernel,
-    readonly parent: kernel.IKernelElement
+    readonly id: string,
+    readonly kernel: IKernel,
+    readonly parent: IKernelElement
   ) {
-    super(name, kernel, parent);
+    super(`queue<${id}>`, kernel, parent);
     this.q = [];
   }
 
+  q: T[];
   enqueue(item: T): void {
     this.q.push(item);
   }
