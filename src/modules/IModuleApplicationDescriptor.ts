@@ -1,13 +1,9 @@
 import { IAppElement } from "../applications/IAppElement";
-import { IKernel } from "../kernel";
-import { IKernelElement } from "../kernel/IKernelElement";
+import { ISession } from "../sessions";
 
 export interface IModuleApplicationDescriptor {
   name: string;
   ctor: IModuleApplicationCtor;
 }
 
-export type IModuleApplicationCtor = (
-  kernel: IKernel,
-  parent: IKernelElement
-) => IAppElement;
+export type IModuleApplicationCtor = (session: ISession) => IAppElement;
