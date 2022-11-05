@@ -37,18 +37,25 @@ export function logMethod(level: LogLevel = LogLevel.TRACE) {
         const result = targetMethod.apply(this, args);
         if (result instanceof Promise) {
           return result
-            .then(() => {
-              emit(level, "🔺");
+            .then((result) => {
+              emit(level, "🔺", result);
+              return result;
             })
             .catch((e) => {
               emit(LogLevel.ERROR, "🛑 ", "failed", ":", e);
+              e.emited = true;
             });
         } else {
-          emit(level, "🔺");
+          emit(level, "🔺", result);
           return result;
         }
-      } catch (e) {
-        emit(LogLevel.ERROR, "🛑", "failed", ":", e);
+      } catch (e: any) {
+        if (e.emited === true) {
+          emit(LogLevel.ERROR, "🛑", "rejected");
+        } else {
+          emit(LogLevel.ERROR, "🛑", "failed", ":", e);
+        }
+        e.emited = true;
         throw e;
       }
     };
