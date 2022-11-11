@@ -1,9 +1,10 @@
+import { IKernelBroker } from "../kernel/IKernelBroker";
 import { IKernelElement } from "../kernel/IKernelElement";
 import { IStorageFileSystemDriver } from "./IStorageFileSystemDriver";
 import { IStoragePathsDriver } from "./IStoragePathsDriver";
 import { IStorageVolume } from "./IStorageVolume";
 
-export interface IStorageBroker extends IKernelElement {
+export interface IStorageBroker extends IKernelBroker {
   getVolume: (name: string) => Promise<IStorageVolume>;
   createPathsDriver: (
     name: string,

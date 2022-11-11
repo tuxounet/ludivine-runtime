@@ -1,6 +1,6 @@
 import { IKernelElement } from "../kernel/IKernelElement";
 import { ILogLine } from "./ILogLine";
 
-export interface ILogBroker extends IKernelElement {
+export interface ILogsBroker extends IKernelElement {
   output: (line: ILogLine) => void;
 }

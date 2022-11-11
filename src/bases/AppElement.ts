@@ -1,5 +1,7 @@
 import { IAppElement } from "../applications/IAppElement";
+import { Inject } from "../ioc/decorations/Inject";
 import { logMethod } from "../logging/decorators/LogMethod";
+import { IMessagingBroker } from "../messaging";
 import { IMessageEvent } from "../messaging/IMessageEvent";
 import { ISession } from "../sessions/ISession";
 import { KernelElement } from "./KernelElement";
@@ -11,7 +13,11 @@ export abstract class AppElement extends KernelElement implements IAppElement {
     readonly subscriptions?: string[]
   ) {
     super(name, session.kernel, session, subscriptions);
+    this.messaging = this.kernel.container.get("messaging");
   }
+
+  @Inject()
+  messaging: IMessagingBroker;
 
   @logMethod()
   async execute(): Promise<number> {
@@ -39,7 +45,7 @@ export abstract class AppElement extends KernelElement implements IAppElement {
     if (this.substriptions != null) {
       await Promise.all(
         this.substriptions.map(
-          async (item) => await this.kernel.messaging.subscribeTopic(item, this)
+          async (item) => await this.messaging.subscribeTopic(item, this)
         )
       );
     }
@@ -51,7 +57,7 @@ export abstract class AppElement extends KernelElement implements IAppElement {
       await Promise.all(
         this.substriptions.map(
           async (item) =>
-            await this.kernel.messaging.unsubscribeTopic(item, this.fullName)
+            await this.messaging.unsubscribeTopic(item, this.fullName)
         )
       );
     }

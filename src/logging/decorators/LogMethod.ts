@@ -14,17 +14,18 @@ export function logMethod(level: LogLevel = LogLevel.TRACE) {
         const that = this as any;
         const logger = that.log;
         const argsChain = args.map((item) => {
-          if (item == null) {
-            return "NULL!";
-          }
-          if (typeof item === "string") {
-            return item;
-          }
+          try {
+            if (typeof item === "string") return item;
+            if (item instanceof Error)
+              return `${item.name}: ${item.message} ${item.stack ?? ""}`;
+            if (typeof item === "object" && typeof item.fullName === "string")
+              return "{" + String(item?.fullName) + "}";
+            if (item == null) return "NULL!";
 
-          if (typeof item.fullName === "string") {
-            return `{${String(item.fullName)}}`;
+            return JSON.stringify(item);
+          } catch {
+            return "{??}";
           }
-          return `{${JSON.stringify(item)}}`;
         });
         const argsProps = ["(", ...argsChain, ")"];
         if (logger?.emit !== undefined)

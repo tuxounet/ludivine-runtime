@@ -12,7 +12,7 @@ export abstract class KernelElement implements IKernelElement {
     readonly substriptions?: string[]
   ) {
     this.log = new Logger(this, (line: ILogLine) => {
-      this.kernel.logging.output(line);
+      this.kernel.logs.output(line);
     });
   }
 
@@ -31,7 +31,7 @@ export abstract class KernelElement implements IKernelElement {
     if (this.parent != null) {
       return this.parent.fullName + "." + this.name;
     } else {
-      return this.kernel.fullName + "." + this.name;
+      return this.kernel.nickname + "." + this.name;
     }
   }
 }

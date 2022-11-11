@@ -1,25 +1,15 @@
-import { IApplicationsBroker } from "../applications/IApplicationsBroker";
-import { IComputeBroker } from "../compute/IComputeBroker";
-import { IEndpointsBroker } from "../endpoints/IEndpointsBroker";
-import { ILogBroker } from "../logging/ILogBroker";
-import { IMessagingBroker } from "../messaging/IMessagingBroker";
-import { IModulesBroker } from "../modules/IModulesBroker";
-import { ISessionsBroker } from "../sessions/ISessionsBroker";
-import { IStorageBroker } from "../storage/IStorageBroker";
+import { Container } from "../ioc/Container";
+import { ILogsBroker } from "../logging/ILogsBroker";
+import { IKernelOptions } from "./IKernelOptions";
 
 export interface IKernel {
   readonly version: string;
+  readonly container: Container;
+  readonly nickname: string;
   started: boolean;
-  applications: IApplicationsBroker;
-  logging: ILogBroker;
-  storage: IStorageBroker;
-  endpoints: IEndpointsBroker;
-  messaging: IMessagingBroker;
-  compute: IComputeBroker;
-  modules: IModulesBroker;
-  sessions: ISessionsBroker;
-  readonly fullName: string;
-  initialize: () => Promise<void>;
-  shutdown: () => Promise<void>;
+  options: IKernelOptions;
+  logs: ILogsBroker;
+
+  run: (commandLine?: string[]) => Promise<number>;
   askShutdown: () => Promise<void>;
 }

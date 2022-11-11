@@ -74,13 +74,18 @@ export class Logger {
   private buildOutput(...messageParts: unknown[]): string {
     return messageParts
       .map((item: any) => {
-        if (typeof item === "string") return item;
-        if (item instanceof Error)
-          return `${item.name}: ${item.message} ${item.stack ?? ""}`;
-        if (typeof item === "object" && typeof item.fullName === "string")
-          return "{" + String(item?.fullName) + "}";
-        if (item == null) return "NULL!";
-        return JSON.stringify(item);
+        try {
+          if (typeof item === "string") return item;
+          if (item instanceof Error)
+            return `${item.name}: ${item.message} ${item.stack ?? ""}`;
+          if (typeof item === "object" && typeof item.fullName === "string")
+            return "{" + String(item?.fullName) + "}";
+          if (item == null) return "NULL!";
+
+          return JSON.stringify(item);
+        } catch {
+          return "{??}";
+        }
       })
       .join(" ");
   }

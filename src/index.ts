@@ -7,6 +7,7 @@ import * as errors from "./errors/index";
 import * as logging from "./logging/index";
 import * as storage from "./storage/index";
 import * as messaging from "./messaging/index";
+import * as ioc from "./ioc/index";
 import * as applications from "./applications/index";
 import * as modules from "./modules/index";
 import * as sessions from "./sessions";
@@ -24,5 +25,6 @@ export {
   messaging,
   storage,
   sessions,
+  ioc,
   sys,
 };
