@@ -1,9 +1,9 @@
-import { IKernelElement } from "../kernel/IKernelElement";
+import { IKernelBroker } from "../kernel/IKernelBroker";
 import { IStorageVolume } from "../storage";
 
 import { IComputeDependency, IComputeExecuteResult } from "./IComputeRuntime";
 
-export interface IComputeBroker extends IKernelElement {
+export interface IComputeBroker extends IKernelBroker {
   executeEval: (
     runtime: string,
     strToEval: string,

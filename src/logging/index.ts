@@ -1,5 +1,5 @@
 export * from "./ILogTarget";
-export * from "./ILogBroker";
+export * from "./ILogsBroker";
 export * from "./ILogTarget";
 export * from "./ILogLine";
 export * from "./ILogTimeFormat";
