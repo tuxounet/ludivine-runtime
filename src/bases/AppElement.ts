@@ -1,5 +1,4 @@
 import { IAppElement } from "../applications/IAppElement";
-import { Inject } from "../ioc/decorations/Inject";
 import { logMethod } from "../logging/decorators/LogMethod";
 import { IMessagingBroker } from "../messaging";
 import { IMessageEvent } from "../messaging/IMessageEvent";
@@ -16,7 +15,6 @@ export abstract class AppElement extends KernelElement implements IAppElement {
     this.messaging = this.kernel.container.get("messaging");
   }
 
-  @Inject()
   messaging: IMessagingBroker;
 
   @logMethod()

@@ -1,9 +1,11 @@
+import "reflect-metadata";
 import { KernelElement } from "../bases/KernelElement";
 import { BasicError } from "../errors/BasicError";
 import { IKernel } from "../kernel/IKernel";
 import { IKernelBroker } from "../kernel/IKernelBroker";
 import { logMethod } from "../logging/decorators/LogMethod";
-import { PROPS_KEY } from "./decorations/Inject";
+export const CLASS_KEY = "ioc:tagged_class";
+export const PROPS_KEY = "ioc:inject_props";
 
 interface ContainerRegistration {
   clazz: any;
