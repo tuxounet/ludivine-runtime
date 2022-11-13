@@ -1,7 +1,6 @@
 import * as kernel from "./kernel/index";
 import * as bases from "./bases/index";
 import * as config from "./config/index";
-import * as channels from "./channels/index";
 import * as compute from "./compute/index";
 import * as endpoints from "./endpoints/index";
 import * as errors from "./errors/index";
@@ -18,7 +17,6 @@ export {
   bases,
   kernel,
   config,
-  channels,
   modules,
   compute,
   endpoints,
