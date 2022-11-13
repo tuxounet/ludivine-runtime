@@ -13,7 +13,7 @@ export interface ISession extends IKernelElement {
   state: string;
   facts: ISessionFact[];
   sequence: number;
-  waitForReply(sequence: number): Promise<ISessionFactReply>;
+  waitForReply: (sequence: number) => Promise<ISessionFactReply>;
   ask: (prompt: string) => Promise<void>;
   output: (body: string, kind: ISessionFactOutputKind) => Promise<void>;
   terminate: () => Promise<boolean>;

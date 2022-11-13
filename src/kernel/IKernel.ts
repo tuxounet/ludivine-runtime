@@ -12,5 +12,5 @@ export interface IKernel {
 
   run: (args: string[]) => Promise<number>;
   askShutdown: () => Promise<void>;
-  waitForShutdown(sender: string): Promise<void>;
+  waitForShutdown: (sender: string) => Promise<void>;
 }
