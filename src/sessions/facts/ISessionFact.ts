@@ -1,6 +1,6 @@
 export interface ISessionFact {
   type: string;
-  sessionId: string;
+  session: number;
   date: string;
   sender: string;
   sequence: number;
