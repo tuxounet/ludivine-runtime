@@ -10,6 +10,13 @@ export class BasicError extends Error {
     );
   }
 
+  static alreadyExists(who: string, what: string, which: string): BasicError {
+    return new BasicError(
+      409,
+      `entrée ${what} ${which} existe déja quand demandé par ${who}`
+    );
+  }
+
   static notImplementedYet(who: string, what: string): BasicError {
     return new BasicError(
       417,
