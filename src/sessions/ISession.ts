@@ -1,16 +1,20 @@
-import { IInputQuery } from "../channels/IInputQuery";
-import { IInputMessage } from "../channels/IInputMessage";
-import { IOutputMessage } from "../channels/IOutputMessage";
 import { IKernelElement } from "../kernel/IKernelElement";
 import { IMessageEvent } from "../messaging/IMessageEvent";
+import { ISessionFact } from "./facts/ISessionFact";
+import { ISessionFactOutputKind } from "./facts/ISessionFactOutput";
+import { ISessionFactReply } from "./facts/ISessionFactReply";
 export interface ISessionReplyWaiter {
   sequence: string;
   resolver: (ev: IMessageEvent) => void;
   rejecter: (e: Error) => void;
 }
 export interface ISession extends IKernelElement {
-  id: string;
-  output: (out: IOutputMessage) => Promise<void>;
-  input: (input: IInputQuery) => Promise<IInputMessage<string>>;
+  id: number;
+  state: string;
+  facts: ISessionFact[];
+  sequence: number;
+  waitForReply: (sequence: number) => Promise<ISessionFactReply>;
+  ask: (prompt: string) => Promise<void>;
+  output: (body: string, kind: ISessionFactOutputKind) => Promise<void>;
   terminate: () => Promise<boolean>;
 }

@@ -5,3 +5,4 @@ export * from "./IStorageFileSystemDriver";
 export * from "./IStoragePathsCtor";
 export * from "./IStoragePathsDriver";
 export * from "./StorageVolume";
+export * as files from "./files/index";

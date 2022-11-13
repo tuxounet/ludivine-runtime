@@ -1,5 +1,5 @@
 import { IAppElement } from "../applications/IAppElement";
-import { ISession } from "../sessions";
+import { ISession } from "../sessions/ISession";
 
 export interface IModuleApplicationDescriptor {
   name: string;

@@ -10,6 +10,7 @@ export interface IKernel {
   options: IKernelOptions;
   logs: ILogsBroker;
 
-  run: (commandLine?: string[]) => Promise<number>;
+  run: (args: string[]) => Promise<number>;
   askShutdown: () => Promise<void>;
+  waitForShutdown: (sender: string) => Promise<void>;
 }
