@@ -66,7 +66,7 @@ export class Container extends KernelElement {
       throw BasicError.notFound(this.fullName, "registration", identifier);
     const { clazz, constructorArgs } = target;
     const props = Reflect.getMetadata(PROPS_KEY, clazz);
-    const inst = Reflect.construct(
+    const inst: Record<any, any> = Reflect.construct(
       clazz,
       constructorArgs != null ? constructorArgs : []
     );
@@ -76,7 +76,7 @@ export class Container extends KernelElement {
       inst[prop] = this.get(identifier);
     }
 
-    this.instances.set(identifier, inst);
+    this.instances.set(identifier, inst as IKernelBroker);
     return inst;
   }
 
@@ -89,7 +89,13 @@ export class Container extends KernelElement {
     for (const key of keys) {
       const instance = this.instances.get(key);
       if (instance != null) await instance.shutdown();
+      this.instances.delete(key);
     }
+    await Promise.all(
+      Array.from(this.instances.values()).map(
+        async (item) => await item.shutdown()
+      )
+    );
 
     this.instances.clear();
     this.registrations.clear();
