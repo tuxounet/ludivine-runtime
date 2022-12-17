@@ -9,7 +9,7 @@ export interface IRuntimeModule {
 
 export interface IRuntimeModuleSource {
   name: string;
-  upstream: string;
+  upstream?: string;
   version?: string;
   dependencies?: IComputeDependency[];
 }
