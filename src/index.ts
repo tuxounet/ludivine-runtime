@@ -4,6 +4,7 @@ import * as config from "./config/index";
 import * as compute from "./compute/index";
 import * as endpoints from "./endpoints/index";
 import * as errors from "./errors/index";
+import * as knowledge from "./knowledge/index";
 import * as logging from "./logging/index";
 import * as storage from "./storage/index";
 import * as messaging from "./messaging/index";
@@ -12,6 +13,7 @@ import * as applications from "./applications/index";
 import * as modules from "./modules/index";
 import * as sessions from "./sessions";
 import * as sys from "./sys/index";
+import * as scheduler from "./scheduler/index";
 export {
   applications,
   bases,
@@ -20,8 +22,10 @@ export {
   modules,
   compute,
   endpoints,
+  knowledge,
   logging,
   errors,
+  scheduler,
   messaging,
   storage,
   sessions,
